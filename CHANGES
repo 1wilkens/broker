@@ -1,4 +1,41 @@
 
+1.1.2-30 | 2019-04-19 11:08:52 -0700
+
+  * Replace bro_init/bro_done usages with zeek_init/zeek_done (Seth Hall, Corelight)
+
+1.1.2-27 | 2019-04-16 12:42:43 -0700
+
+  * Update usage of a deprecated Sphinx API (Jon Siwek, Corelight)
+
+  * Add missing copyright to sphinx extension code (Jon Siwek, Corelight)
+
+1.1.2-24 | 2019-04-12 13:19:59 -0700
+
+  * Add repr/str methods to python bindings Count type (Jon Siwek, Corelight)
+
+1.1.2-23 | 2019-03-27 10:40:00 -0700
+
+  * Deploy copy-on-write for more efficient messaging (Dominik Charousset)
+
+    This contains a breaking API change (for C++ code, not Python),
+    see NEWS for code migration details.
+
+1.1.2-18 | 2019-03-22 12:48:04 -0700
+
+  * GH-40: use TZ-aware (UTC) datetimes in python bindings (Jon Siwek, Corelight)
+
+1.1.2-15 | 2019-03-07 18:39:46 -0800
+
+    - Add --with-python-config configure option (Jarry Shaw)
+
+1.1.2-13 | 2019-02-15 13:53:38 -0600
+
+  * zeek/GH-273: Fix file descriptor leak in subscribers (Jon Siwek, Corelight)
+
+    Specifically, endpoint::make_status_subscriber() and
+    endpoint::make_subscriber() methods because the "flare" class was
+    missing a dtor to close its FDs.
+
 1.1.2-12 | 2019-02-06 13:15:57 -0600
 
   * Add validity-checking functions for Bro-specific messages (Jon Siwek, Corelight)
