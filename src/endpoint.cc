@@ -62,7 +62,7 @@ void endpoint::clock::advance_time(timestamp t) {
   if (it->first > t)
     return;
 
-  // Note: this function is performance-sensitive in the case of Bro
+  // Note: this function is performance-sensitive in the case of Zeek
   // reading pcaps and it's important to not construct this set unless
   // it's actually going to be used.
   std::unordered_set<caf::actor> sync_with_actors;
@@ -152,7 +152,11 @@ void endpoint::shutdown() {
     caf::scoped_actor self{system_};
     CAF_LOG_DEBUG("send exit messages to all children");
     for (auto& child : children_)
-      self->send_exit(child, caf::exit_reason::user_shutdown);
+      // exit_reason::kill seems more reliable than
+      // exit_reason::user_shutdown in terms of avoiding deadlocks/hangs,
+      // possibly due to the former having more explicit logic that will
+      // shut down streams.
+      self->send_exit(child, caf::exit_reason::kill);
     CAF_LOG_DEBUG("wait until all children have terminated");
     self->wait_for(children_);
     children_.clear();

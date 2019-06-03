@@ -1,4 +1,65 @@
 
+1.1.2-49 | 2019-05-30 21:32:58 -0700
+
+  * Improve shutdown behavior (Jon Siwek, Corelight)
+
+    Sending the "kill" exit reason to CAF actors seems to more reliably
+    avoid deadlock/hang issues on shutting down, likely due to it having
+    more explicit logic to shut down streams.
+
+1.1.2-48 | 2019-05-28 17:39:41 -0700
+
+  * Fix subscriber_base::get(n, timeout) congestion tracking (Jon Siwek, Corelight)
+
+    This could call became_not_full() in cases where the underlying queue
+    size did not actually transition to below the congestion limit.
+
+  * Fix race in subscriber_base::poll() leading to vector realloc (Jon Siwek, Corelight)
+
+    The value used to reserve the initial vector capacity may
+    be underestimated due to unlocking a mutex between the call
+    to buffer_size() and consume(), leading to unnecessary vector
+    re-allocation.
+
+  * Improve broker::bro::Message API to help avoid copies (Jon Siwek, Corelight)
+
+  * Fix flare_actor always reporting readiness (Jon Siwek, Corelight)
+
+    Since mailbox elements get taken via receive(), not dequeue(),
+    the flare which signalled readiness never got extinguished.
+
+  * Add broker::store::proxy::receive(n) (Jon Siwek, Corelight)
+
+    For receiving N data store responses at a time.
+
+1.1.2-40 | 2019-05-23 17:57:57 -0700
+
+  * GH-43: use Python tuples to represent Broker vectors (Jon Siwek, Corelight)
+
+    Opposed to previously mapping vectors to Python lists.
+
+    This is needed in order to represent tables indexed by vectors: tables
+    are mapped to dictionaries, dictionaries require immutable indices,
+    and a tuple is immutable whereas a list is mutable.
+
+1.1.2-38 | 2019-05-15 15:52:42 -0700
+
+  * Fix for Python2 compatibility (Jon Siwek, Corelight)
+
+1.1.2-37 | 2019-05-15 14:36:24 -0700
+
+  * Add bro.py compatibility module with deprecation warnings (Jon Siwek, Corelight)
+
+  * Add bro.hh compatibility header with deprecation warnings (Jon Siwek, Corelight)
+
+  * Replace "bro" with "zeek" in tests, docs, and src code (Daniel Thayer)
+
+  * Rename files from "bro" to "zeek" (Daniel Thayer)
+
+1.1.2-32 | 2019-05-14 12:21:59 -0700
+
+  * Update unit test to use zeek executable, not bro (Jon Siwek, Corelight)
+
 1.1.2-30 | 2019-04-19 11:08:52 -0700
 
   * Replace bro_init/bro_done usages with zeek_init/zeek_done (Seth Hall, Corelight)

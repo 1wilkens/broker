@@ -372,6 +372,7 @@ class Message:
     def to_broker(self):
         assert False and "method not overridden"
 
+from . import zeek
 from . import bro
 
 class Data(_broker.Data):
@@ -379,7 +380,7 @@ class Data(_broker.Data):
         if x is None:
             _broker.Data.__init__(self)
 
-        elif isinstance(x, bro.Event):
+        elif isinstance(x, zeek.Event):
             _broker.Data.__init__(self, x.as_data())
 
         elif isinstance(x, _broker.Data):
@@ -467,7 +468,7 @@ class Data(_broker.Data):
             return {Data.to_py(k): Data.to_py(v) for (k, v) in t.items()}
 
         def to_vector(v):
-            return [Data.to_py(i) for i in v]
+            return tuple(Data.to_py(i) for i in v)
 
         def _try_bytes_decode(b):
             try:
